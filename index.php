@@ -97,7 +97,7 @@ function sanitizeTitle($str) {
 		width: 100%;
 	}
 	.panel-inverse {
-		background-color: #555;
+		background-color: #444;
 	}
 	</style>
 </head>
