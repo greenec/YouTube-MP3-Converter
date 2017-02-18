@@ -23,17 +23,15 @@ function downloadVideo($url) {
 
 function sanitizeURL($url) {
 	// found at http://stackoverflow.com/questions/13476060/validating-youtube-url-using-regex
-	$rx = '~' .
-	'^(?:https?://)?' .														# Optional protocol
+	$rx = '~^(?:https?://)?' .										# Optional protocol
 	'(?:www[.])?' .																# Optional sub-domain
 	'(?:youtube[.]com/watch[?]v=|youtu[.]be/)' .	# Mandatory domain name (w/ query string in .com)
-	'([^&]{11})' .																# Video id of 11 characters as capture group 1
-	'~x';
+	'([^&]{11})~';																# Video id of 11 characters as capture group 1
 
 	$has_match = preg_match($rx, $url, $matches);
 
 	// if matching succeeded, $matches[1] would contain the video ID
-	return (isset($matches[1])) ? 'https://youtube.com/watch?v=' . $matches[1] : '';
+	return (isset($matches[1])) ? 'https://www.youtube.com/watch?v=' . $matches[1] : '';
 }
 
 $data = array('url' => $url);
