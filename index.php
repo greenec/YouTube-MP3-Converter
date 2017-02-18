@@ -7,6 +7,7 @@ $url = sanitizeURL($url);
 if(!empty($url)) {
 	$info = getVideoInfo($url);
 	$title = isset($info[0]) ? $info[0] : '';
+	$cleanTitle = isset($title) ? sanitizeTitle($title) : '';
 	$thumbnail = isset($info[1]) ? $info[1] : '';
 	$duration = isset($info[2]) ? timeToInt($info[2]) : '';
 }
@@ -44,17 +45,19 @@ function timeToInt($str) {
 
 function sanitizeURL($url) {
 	// found at http://stackoverflow.com/questions/13476060/validating-youtube-url-using-regex
-	$rx = '~' .
-	'^(?:https?://)?' .														# Optional protocol
+	$rx = '~^(?:https?://)?' .										# Optional protocol
 	'(?:www[.])?' .																# Optional sub-domain
 	'(?:youtube[.]com/watch[?]v=|youtu[.]be/)' .	# Mandatory domain name (w/ query string in .com)
-	'([^&]{11})' .																# Video id of 11 characters as capture group 1
-	'~x';
+	'([^&]{11})~';																# Video id of 11 characters as capture group 1
 
 	$has_match = preg_match($rx, $url, $matches);
 
 	// if matching succeeded, $matches[1] would contain the video ID
-	return (isset($matches[1])) ? 'https://youtube.com/watch?v=' . $matches[1] : '';
+	return (isset($matches[1])) ? 'https://www.youtube.com/watch?v=' . $matches[1] : '';
+}
+
+function sanitizeTitle($str) {
+	return preg_replace("/[?]/", '', $str);
 }
 
 ?>
@@ -132,7 +135,7 @@ function sanitizeURL($url) {
 				<div class='progress-bar transition-slow' id='progress'></div>
 			</div>
 
-			<a href='audio/<?php echo $title; ?>.mp3' class='btn btn-info' id='download' download>Download MP3</a>
+			<a href='audio/<?php echo $cleanTitle; ?>.mp3' class='btn btn-info' id='download' download>Download MP3</a>
 			<br>
 
 			<?php
@@ -148,7 +151,7 @@ function sanitizeURL($url) {
 
 		<br>
 	</div>
-	
+
 	<script src='js/script.js'></script>
 	<script>
 	$(document).ready(function() {
@@ -158,7 +161,7 @@ function sanitizeURL($url) {
 			$('#progress').addClass('almost');
 			var ajaxData = {
 				'url': url,
-				'title': '<?php echo $title; ?>'
+				'title': '<?php echo $cleanTitle; ?>'
 			};
 			$.ajax({
 				type: 'POST',
