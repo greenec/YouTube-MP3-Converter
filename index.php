@@ -24,7 +24,7 @@ if(!empty($title) && $duration <= 600) {
 } else {
 	$error = true; // video not found
 
-	if($duration > 600) {
+	if(isset($duration) && $duration > 600) {
 		$durationError = true;
 	}
 }
@@ -57,7 +57,7 @@ function sanitizeURL($url) {
 }
 
 function sanitizeTitle($str) {
-	return preg_replace("/[?]/", '', $str);
+	return htmlspecialchars(preg_replace("/[?]/", '', $str), ENT_QUOTES);
 }
 
 ?>
