@@ -7,9 +7,9 @@ $url = sanitizeURL($url);
 if(!empty($url)) {
 	$info = getVideoInfo($url);
 	$title = isset($info[0]) ? $info[0] : '';
-	$cleanTitle = isset($title) ? sanitizeTitle($title) : '';
 	$thumbnail = isset($info[1]) ? $info[1] : '';
-	$duration = isset($info[2]) ? timeToInt($info[2]) : '';
+	$cleanTitle = isset($info[2]) ? sanitizeTitle($info[2]) : '';
+	$duration = isset($info[3]) ? timeToInt($info[3]) : '';
 }
 
 if(!empty($title) && $duration <= 600) {
@@ -30,7 +30,7 @@ if(!empty($title) && $duration <= 600) {
 }
 
 function getVideoInfo($url) {
-	$response = shell_exec('youtube-dl --get-title --get-thumbnail --get-duration -- ' . escapeshellarg($url));
+	$response = shell_exec("youtube-dl --get-title --get-thumbnail --get-filename --get-duration -o '%(title)s' -- " . escapeshellarg($url));
 	return explode("\n", $response);
 }
 
@@ -57,7 +57,7 @@ function sanitizeURL($url) {
 }
 
 function sanitizeTitle($str) {
-	return htmlspecialchars(preg_replace("/[?]/", '', $str), ENT_QUOTES);
+	return htmlspecialchars($str, ENT_QUOTES);
 }
 
 ?>
