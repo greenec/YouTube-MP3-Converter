@@ -1,7 +1,7 @@
 <?php
 
 $url = isset($_POST['url']) ? $_POST['url'] : ''; // the youtube video ID
-$title = isset($_POST['title']) ? $_POST['title'] : '';
+$title = isset($_POST['title']) ? htmlspecialchars_decode($_POST['title'], ENT_QUOTES) : '';
 
 $url = sanitizeURL($url);
 
@@ -18,7 +18,7 @@ if(!empty($title)) {
 }
 
 function downloadVideo($url) {
-	exec("youtube-dl -x --audio-format mp3 -o '../audio/%(title)s.%(ext)s' --match-filter 'duration <= 600' --" . escapeshellarg($url));
+	exec("youtube-dl -x --audio-format mp3 -o '../audio/%(title)s.%(ext)s' --match-filter 'duration <= 600' -- " . escapeshellarg($url));
 }
 
 function sanitizeURL($url) {
@@ -34,7 +34,7 @@ function sanitizeURL($url) {
 	return (isset($matches[1])) ? 'https://www.youtube.com/watch?v=' . $matches[1] : '';
 }
 
-$data = array('url' => $url);
+$data = array('url' => $url, 'title' => $title);
 
 echo json_encode($data);
 
