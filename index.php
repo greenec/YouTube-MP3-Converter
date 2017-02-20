@@ -30,7 +30,7 @@ if(!empty($title) && $duration <= 600) {
 }
 
 function getVideoInfo($url) {
-	$response = shell_exec("youtube-dl --get-title --get-thumbnail --get-duration $url");
+	$response = shell_exec('youtube-dl --get-title --get-thumbnail --get-duration -- ' . escapeshellarg($url));
 	return explode("\n", $response);
 }
 
