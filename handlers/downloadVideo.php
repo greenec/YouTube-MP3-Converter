@@ -18,7 +18,7 @@ if(!empty($title)) {
 }
 
 function downloadVideo($url) {
-	exec("youtube-dl -x --audio-format mp3 -o '../audio/%(title)s.%(ext)s' --match-filter 'duration <= 600' $url");
+	exec("youtube-dl -x --audio-format mp3 -o '../audio/%(title)s.%(ext)s' --match-filter 'duration <= 600' --" . escapeshellarg($url));
 }
 
 function sanitizeURL($url) {
