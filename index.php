@@ -1,8 +1,6 @@
 <?php
 
-$url = isset($_GET['url']) ? $_GET['url'] : ''; // the youtube video ID
-
-$url = sanitizeURL($url);
+$url = isset($_GET['url']) ? sanitizeURL($_GET['url']) : ''; // the youtube video ID
 
 if(!empty($url)) {
 	$info = getVideoInfo($url);
@@ -14,7 +12,7 @@ if(!empty($url)) {
 
 if(!empty($title) && $duration <= 600) {
 	$error = false;
-
+	
 	if(file_exists("audio/$title.mp3")) {
 		$exists = true;
 	} else {
@@ -65,18 +63,14 @@ function sanitizeURL($url) {
 	<title>YouTube Audio Downloader</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
 	<style>
+	.panel-inverse {
+		background-color: #444;
+	}
 	.img-responsive {
 		display: inline;
 		max-height: 400px;
 		border-top: 20px solid #000;
 		border-bottom: 20px solid #000;
-
-	}
-	@media(max-width: 768px) {
-		.search {
-			padding-left: 8.33333%;
-			padding-right: 0;
-		}
 	}
 	.transition-slow {
 		transition: width 15s linear;
@@ -86,23 +80,24 @@ function sanitizeURL($url) {
 		transition: width 1s linear;
 		-webkit-transition: width 1s linear;
 	}
-	.almost {
+	.almost-full {
 		width: 90%;
 	}
 	.full {
 		width: 100%;
 	}
-	.panel-inverse {
-		background-color: #444;
+	@media(max-width: 768px) {
+		.search {
+			padding-left: 8.33333%;
+			padding-right: 0;
+		}
 	}
 	</style>
 </head>
 <body>
 
 	<div class='container text-center'>
-
 		<br>
-
 		<div class='panel panel-default panel-inverse'>
 			<br>
 			<form id='form'>
@@ -154,7 +149,7 @@ function sanitizeURL($url) {
 		var url = '<?php echo (!$error) ? $url : ''; ?>';
 		if(url) {
 			$('#download').hide();
-			$('#progress').addClass('almost');
+			$('#progress').addClass('almost-full');
 			var ajaxData = {
 				'url': url,
 				'title': "<?php echo $cleanTitle; ?>"
@@ -168,7 +163,7 @@ function sanitizeURL($url) {
 			})
 			.done(function(data) {
 				$('#progress').toggleClass('transition-slow transition-fast');
-				$('#progress').toggleClass('almost full');
+				$('#progress').toggleClass('almost-full full');
 				$("#progress").addClass('progress-bar-success');
 				$('#download').show();
 			});
