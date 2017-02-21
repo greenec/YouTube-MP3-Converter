@@ -1,9 +1,7 @@
 <?php
 
-$url = isset($_POST['url']) ? $_POST['url'] : ''; // the youtube video ID
+$url = isset($_POST['url']) ? sanitizeURL($_POST['url']) : ''; // the youtube video ID
 $title = isset($_POST['title']) ? htmlspecialchars_decode($_POST['title']) : '';
-
-$url = sanitizeURL($url);
 
 if(!empty($title)) {
 	if(file_exists("../audio/$title.mp3")) {
