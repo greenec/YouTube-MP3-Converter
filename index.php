@@ -8,7 +8,7 @@ if(!empty($url)) {
 	$info = getVideoInfo($url);
 	$title = isset($info[0]) ? $info[0] : '';
 	$thumbnail = isset($info[1]) ? $info[1] : '';
-	$cleanTitle = isset($info[2]) ? sanitizeTitle($info[2]) : '';
+	$cleanTitle = isset($info[2]) ? htmlspecialchars($info[2]) : '';
 	$duration = isset($info[3]) ? timeToInt($info[3]) : '';
 }
 
@@ -54,10 +54,6 @@ function sanitizeURL($url) {
 
 	// if matching succeeded, $matches[1] would contain the video ID
 	return (isset($matches[1])) ? 'https://www.youtube.com/watch?v=' . $matches[1] : '';
-}
-
-function sanitizeTitle($str) {
-	return htmlspecialchars($str);
 }
 
 ?>
