@@ -65,6 +65,7 @@ function sanitizeURL($url) {
 	<style>
 	.panel-inverse {
 		background-color: #444;
+		border-color: #444;
 	}
 	.img-responsive {
 		display: inline;
