@@ -1,7 +1,7 @@
 <?php
 
 $url = isset($_POST['url']) ? $_POST['url'] : ''; // the youtube video ID
-$title = isset($_POST['title']) ? htmlspecialchars_decode($_POST['title'], ENT_QUOTES) : '';
+$title = isset($_POST['title']) ? htmlspecialchars_decode($_POST['title']) : '';
 
 $url = sanitizeURL($url);
 
