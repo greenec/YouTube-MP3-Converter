@@ -57,7 +57,7 @@ function sanitizeURL($url) {
 }
 
 function sanitizeTitle($str) {
-	return htmlspecialchars($str, ENT_QUOTES);
+	return htmlspecialchars($str);
 }
 
 ?>
@@ -135,7 +135,7 @@ function sanitizeTitle($str) {
 				<div class='progress-bar transition-slow' id='progress'></div>
 			</div>
 
-			<a href='audio/<?php echo $cleanTitle; ?>.mp3' class='btn btn-info' id='download' download>Download MP3</a>
+			<a href="audio/<?php echo $cleanTitle; ?>.mp3" class='btn btn-info' id='download' download>Download MP3</a>
 			<br>
 
 			<?php
@@ -161,7 +161,7 @@ function sanitizeTitle($str) {
 			$('#progress').addClass('almost');
 			var ajaxData = {
 				'url': url,
-				'title': '<?php echo $cleanTitle; ?>'
+				'title': "<?php echo $cleanTitle; ?>"
 			};
 			$.ajax({
 				type: 'POST',
