@@ -12,7 +12,7 @@ if(!empty($url)) {
 
 if(!empty($title) && $duration <= 600) {
 	$error = false;
-	
+
 	if(file_exists("audio/$title.mp3")) {
 		$exists = true;
 	} else {
@@ -63,9 +63,8 @@ function sanitizeURL($url) {
 	<title>YouTube Audio Downloader</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
 	<style>
-	.panel-inverse {
-		background-color: #444;
-		border-color: #444;
+	.navbar-form {
+		padding: 0;
 	}
 	.img-responsive {
 		display: inline;
@@ -87,31 +86,26 @@ function sanitizeURL($url) {
 	.full {
 		width: 100%;
 	}
-	@media(max-width: 768px) {
-		.search {
-			padding-left: 8.33333%;
-			padding-right: 0;
-		}
-	}
 	</style>
 </head>
 <body>
 
+	<nav class='navbar navbar-inverse navbar-static-top'>
+		<div class='container'>
+			<div class='col-md-8 col-md-offset-2'>
+				<form class="navbar-form">
+					<div class="input-group">
+						<input name='url' type='text' class='form-control' placeholder='Video URL' value='<?php echo $url; ?>'>
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="submit">Go!</button>
+						</span>
+					</div><!--/.input-group -->
+				</form><!--/.navbar-form -->
+			</div>
+		</div><!-- /.container -->
+	</nav><!-- /.navbar -->
+
 	<div class='container text-center'>
-		<br>
-		<div class='panel panel-default panel-inverse'>
-			<br>
-			<form id='form'>
-				<div class='form-group row'>
-					<div class='search col-xs-8 col-sm-offset-2 col-sm-7'>
-						<input name='url' id='url' type='text' class='form-control' placeholder='Video URL' value='<?php echo $url; ?>'>
-					</div>
-					<div class='col-xs-1 col-sm-1 text-left'>
-						<button type="submit" class='btn btn-default'>Go!</button>
-					</div>
-				</div>
-			</form>
-		</div>
 
 		<?php
 		if(!$error) { ?>
@@ -142,7 +136,7 @@ function sanitizeURL($url) {
 		} ?>
 
 		<br>
-	</div>
+	</div><!-- /.container -->
 
 	<script src='js/script.js'></script>
 	<script>
