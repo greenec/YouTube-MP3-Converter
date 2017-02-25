@@ -1,16 +1,19 @@
 <?php
 
+$durationLimit = 900; // 15 minutes
+
 $url = isset($_GET['url']) ? sanitizeURL($_GET['url']) : ''; // the youtube video ID
 
 if(!empty($url)) {
 	$info = getVideoInfo($url);
-	$title = isset($info[0]) ? $info[0] : '';
-	$thumbnail = isset($info[1]) ? $info[1] : '';
-	$cleanTitle = isset($info[2]) ? htmlspecialchars($info[2]) : '';
-	$duration = isset($info[3]) ? timeToInt($info[3]) : '';
 }
 
-if(!empty($title) && $duration <= 600) {
+$title = isset($info[0]) ? $info[0] : '';
+$thumbnail = isset($info[1]) ? $info[1] : '';
+$cleanTitle = isset($info[2]) ? htmlspecialchars($info[2]) : '';
+$duration = isset($info[3]) ? timeToInt($info[3]) : 0;
+
+if(!empty($title) && $duration <= $durationLimit) {
 	$error = false;
 
 	if(file_exists("audio/$title.mp3")) {
@@ -22,7 +25,7 @@ if(!empty($title) && $duration <= 600) {
 } else {
 	$error = true; // video not found
 
-	if(isset($duration) && $duration > 600) {
+	if($duration > $durationLimit) {
 		$durationError = true;
 	}
 }
@@ -129,7 +132,7 @@ function sanitizeURL($url) {
 			if(empty($url)) {
 				echo "<h3>Please enter a video URL.</h3>";
 			} else if(isset($durationError)) {
-				echo "<h3>Video exceeds 10 minute limit.</h3>";
+				echo "<h3>Video exceeds 15 minute limit.</h3>";
 			} else {
 				echo "<h3>Something went wrong...please enter a valid URL.</h3>";
 			}
