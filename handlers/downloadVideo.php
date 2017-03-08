@@ -1,5 +1,9 @@
 <?php
 
+require '../include/config.php';
+
+// durationLimit is set in config.php
+
 $url = isset($_POST['url']) ? sanitizeURL($_POST['url']) : ''; // the youtube video ID
 $title = isset($_POST['title']) ? htmlspecialchars_decode($_POST['title']) : '';
 
@@ -11,12 +15,12 @@ if(!empty($title)) {
 	}
 
 	if(!$exists) {
-		downloadVideo($url);
+		downloadVideo($url, $durationLimit);
 	}
 }
 
-function downloadVideo($url) {
-	exec("youtube-dl -x --audio-format mp3 -o '../audio/%(title)s.%(ext)s' --match-filter 'duration <= 900' -- " . escapeshellarg($url));
+function downloadVideo($url, $durationLimit) {
+	exec("youtube-dl -x --audio-format mp3 -o '../audio/%(title)s.%(ext)s' --match-filter 'duration <= $durationLimit' -- " . escapeshellarg($url));
 }
 
 function sanitizeURL($url) {
