@@ -1,6 +1,8 @@
 <?php
 
-$durationLimit = 900; // 15 minutes
+require 'include/config.php';
+
+// durationLimit is set in config.php
 
 $url = isset($_GET['url']) ? sanitizeURL($_GET['url']) : ''; // the youtube video ID
 
@@ -21,6 +23,9 @@ if(!empty($title) && $duration <= $durationLimit) {
 	} else {
 		$exists = false;
 	}
+
+	// set the timing of the loading bar, albeit roughly estimated
+	$wait = estimateWait($duration);
 
 } else {
 	$error = true; // video not found
@@ -57,6 +62,16 @@ function sanitizeURL($url) {
 	return (isset($matches[1])) ? 'https://www.youtube.com/watch?v=' . $matches[1] : '';
 }
 
+function estimateWait($duration) {
+	if($duration < 240) { // 4 minutes
+		return 10;
+	} else if($duration < 480) { // 8 minutes
+		return 18;
+	} else {
+		return 40;
+	}
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -76,8 +91,8 @@ function sanitizeURL($url) {
 		border-bottom: 20px solid #000;
 	}
 	.transition-slow {
-		transition: width 15s linear;
-		-webkit-transition: width 15s linear;
+		transition: width <?php echo $wait . 's'; ?> linear;
+		-webkit-transition: width <?php echo $wait . 's'; ?> linear;
 	}
 	.transition-fast {
 		transition: width 1s linear;
@@ -132,7 +147,7 @@ function sanitizeURL($url) {
 			if(empty($url)) {
 				echo "<h3>Please enter a video URL.</h3>";
 			} else if(isset($durationError)) {
-				echo "<h3>Video exceeds 15 minute limit.</h3>";
+				echo "<h3>Video exceeds $durationMinutes minute limit.</h3>";
 			} else {
 				echo "<h3>Something went wrong...please enter a valid URL.</h3>";
 			}
